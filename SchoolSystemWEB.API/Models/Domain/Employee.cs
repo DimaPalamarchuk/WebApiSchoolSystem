@@ -7,6 +7,6 @@
 
         public Guid UserId { get; set; }
         // Navigation properties
-        public User User { get; set; }
+//        public User User { get; set; }
     }
 }

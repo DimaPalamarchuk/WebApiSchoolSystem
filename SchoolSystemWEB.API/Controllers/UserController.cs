@@ -72,7 +72,7 @@ namespace SchoolSystemWEB.API.Controllers
                     };
                     
                     studentIndexBase++;
-                    dbContext.Students.Add(student);
+//                    dbContext.Students.Add(student);
                 }
                 else if (user.RoleId == employeeRole?.RoleId)
                 {
@@ -82,12 +82,12 @@ namespace SchoolSystemWEB.API.Controllers
                         Username = $"{user.FirstName.Substring(0, 1).ToLower()}{user.LastName.ToLower()}",
                         UserId = user.UserId
                     };
-                    dbContext.Employees.Add(employee);
+//                    dbContext.Employees.Add(employee);
                 }
             }
 
-            dbContext.Users.AddRange(users);
-            dbContext.SaveChanges();
+//            dbContext.Users.AddRange(users);
+//            dbContext.SaveChanges();
 
             return Ok(users);
         }
