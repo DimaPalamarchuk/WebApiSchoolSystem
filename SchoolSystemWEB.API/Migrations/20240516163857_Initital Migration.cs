@@ -37,7 +37,7 @@ namespace SchoolSystemWEB.API.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Users",
-                columns: table => new
+                columns: table => new   
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
