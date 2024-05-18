@@ -9,7 +9,6 @@ namespace SchoolSystemWEB.API.Data
         {
 
         }
-
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Role> Roles { get; set; }

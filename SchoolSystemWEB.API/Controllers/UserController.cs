@@ -9,91 +9,130 @@ using System.Linq;
 
 namespace SchoolSystemWEB.API.Controllers
 {
+    // Class for operations on users
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
+        // Database Connection
         private readonly WebSystemDB dbContext;
-
         public UserController(WebSystemDB dbContext)
         {
             this.dbContext = dbContext;
         }
 
+        // Get ALL User
         [HttpGet]
         public IActionResult GetAll()
         {
-            var studentRole = dbContext.Roles.FirstOrDefault(r => r.RoleName == "Student");
-            var employeeRole = dbContext.Roles.FirstOrDefault(r => r.RoleName == "Employee");
-
-            var users = new List<User>
-    {
-        new User
-        {
-            UserId = Guid.NewGuid(),
-            FirstName = "Dmytro",
-            LastName = "Palamarchuk",
-            RoleId = studentRole?.RoleId ?? Guid.Empty
-        },
-        new User
-        {
-            UserId = Guid.NewGuid(),
-            FirstName = "Hlib",
-            LastName = "Suprun",
-            RoleId = employeeRole?.RoleId ?? Guid.Empty
-        },
-        new User
-        {
-            UserId = Guid.NewGuid(),
-            FirstName = "Hlib",
-            LastName = "Suprun",
-            RoleId = studentRole?.RoleId ?? Guid.Empty
-        },
-        new User
-        {
-            UserId = Guid.NewGuid(),
-            FirstName = "Dmytro",
-            LastName = "Palamarchuk",
-            RoleId = employeeRole?.RoleId ?? Guid.Empty
-        }
-    };
-
-            var studentIndexBase = 68161;
-
-            foreach (var user in users)
-            {
-                if (user.RoleId == studentRole?.RoleId)
+            var users = dbContext.Users
+                .Select(user => new
                 {
-                    var student = new Student
-                    {
-                        StudentId = Guid.NewGuid(),
-                        IndexNo = "w" + studentIndexBase.ToString(),
-                        UserId = user.UserId
-                    };
-
-                    studentIndexBase++;
-                    //                    dbContext.Students.Add(student);
-                }
-                else if (user.RoleId == employeeRole?.RoleId)
-                {
-                    var employee = new Employee
-                    {
-                        EmployeeId = Guid.NewGuid(),
-                        Username = $"{user.FirstName.Substring(0, 1).ToLower()}{user.LastName.ToLower()}",
-                        UserId = user.UserId
-                    };
-                    //                    dbContext.Employees.Add(employee);
-                }
-            }
-
-            //            dbContext.Users.AddRange(users);
-            //            dbContext.SaveChanges();
+                    user.Username,
+                    user.FirstName,
+                    user.LastName,
+                    RoleName = user.Role.RoleName
+                })
+                .ToList();
 
             return Ok(users);
         }
+
+        // Create new User and changes in DataBase
+        [HttpPost("{username}, {pass}, {firstName}, {lastName}, {roleName}")]
+        public IActionResult Post(string username, string pass, string firstName, string lastName, string roleName)
+        {
+            var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == username);
+            if (existingUser != null)
+            {
+                return Conflict($"Username {username} already exists");
+            }
+
+            var role = dbContext.Roles.FirstOrDefault(r => r.RoleName == roleName);
+            if (role == null)
+            {
+                return NotFound($"Role with name {roleName} not found");
+            }
+
+            var newUser = new User
+            {
+                UserId = Guid.NewGuid(),
+                Username = username,
+                Password = pass,
+                FirstName = firstName,
+                LastName = lastName,
+                RoleId = role.RoleId
+            };
+
+            if (roleName == "Student")
+            {
+                var newStudent = new Student
+                {
+                    StudentId = Guid.NewGuid(),
+                    UserId = newUser.UserId
+                };
+                dbContext.Add(newStudent);
+            }
+
+            if (roleName == "Employee")
+            {
+                var newEmployee = new Employee
+                {
+                    EmployeeId = Guid.NewGuid(),
+                    UserId = newUser.UserId
+                };
+                dbContext.Add(newEmployee);
+            }
+
+            dbContext.Users.Add(newUser);
+
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while saving the user: {ex.Message}");
+            }
+
+            var userDto = new
+            {
+                newUser.UserId,
+                newUser.Username,
+                newUser.FirstName,
+                newUser.LastName,
+                RoleName = roleName
+            };
+
+            return Ok(userDto);
+        }
+
+        // Get SINGLE User BY Username
+        [HttpGet("{username}")]
+        public IActionResult Get(string username)
+        {
+            var usernameFind = dbContext.Users
+                .Include(x => x.Role)
+                .FirstOrDefault(x => x.Username == username);
+
+            if(usernameFind != null)
+            {
+                var userDto = new
+                {
+                    Username = usernameFind.Username,
+                    FirstName = usernameFind.FirstName,
+                    LastName = usernameFind.LastName,
+                    Role = usernameFind.Role.RoleName
+                };
+
+                return Ok(userDto);
+            }
+            return NotFound($"Username {username} is not found");
+        }
+
     }
 
-    // There will be changes(Add password in Models Employee/Student)
+    // Class for user authorization
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
@@ -105,47 +144,26 @@ namespace SchoolSystemWEB.API.Controllers
             this.dbContext = dbContext;
         }
 
-        [HttpGet("{identifier}")]
-        public IActionResult Get([FromRoute] string identifier)
+        // Checking data for user authorization
+        [HttpGet]
+        public IActionResult Get(string username, string pass)
         {
-            var student = dbContext.Students
-                .Include(s => s.User)
-                .ThenInclude(s => s.Role)
-                .FirstOrDefault(s => s.IndexNo == identifier);
+            var userEnter = dbContext.Users
+                .Include(s => s.Role)
+                .FirstOrDefault(s => s.Username == username && s.Password == pass);
 
-            if (student != null)
+            if(userEnter != null)
             {
                 var userDto = new
                 {
-                    student.StudentId,
-                    student.User.FirstName,
-                    student.User.LastName,
-                    RoleName = student.User.Role.RoleName
+                    userEnter.Username,
+                    userEnter.FirstName,
+                    userEnter.LastName,
+                    RoleName = userEnter.Role.RoleName
                 };
                 return Ok(userDto);
             }
-
-            var employee = dbContext.Employees
-                    .Include(e => e.User)
-                    .ThenInclude(e => e.Role)
-                    .FirstOrDefault(e => e.Username == identifier);
-
-            if (employee != null)
-            {
-                var userDto = new
-                {
-                    employee.Username,
-                    employee.User.FirstName,
-                    employee.User.LastName,
-                    RoleName = employee.User.Role.RoleName
-
-                };
-                return Ok(userDto);
-            }
-
-            return NotFound($"No user found with identifier '{identifier}'.");
+            return NotFound($"Login {username} or password not found");
         }
-
     }
-
 }

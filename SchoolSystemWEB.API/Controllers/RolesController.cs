@@ -15,7 +15,7 @@ namespace SchoolSystemWEB.API.Controllers
             this.dbContext = dbContext;
         }
 
-        // GET ALL Roles
+        // Get ALL Roles
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -24,7 +24,7 @@ namespace SchoolSystemWEB.API.Controllers
             return Ok(roles);
         }
 
-        // GET SINGLE Role BY RoleId
+        // Get SINGLE Role By RoleId
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetById([FromRoute]Guid id)
