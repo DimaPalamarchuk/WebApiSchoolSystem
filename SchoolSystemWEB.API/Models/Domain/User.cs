@@ -9,6 +9,6 @@
         public Guid RoleId { get; set; }
 
         // Navigation properties
-//        public Role Role { get; set; }
+        public Role Role { get; set; }
     }
 }

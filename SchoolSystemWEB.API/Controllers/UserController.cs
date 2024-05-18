@@ -70,9 +70,9 @@ namespace SchoolSystemWEB.API.Controllers
                         IndexNo = "w" + studentIndexBase.ToString(),
                         UserId = user.UserId
                     };
-                    
+
                     studentIndexBase++;
-//                    dbContext.Students.Add(student);
+                    //                    dbContext.Students.Add(student);
                 }
                 else if (user.RoleId == employeeRole?.RoleId)
                 {
@@ -82,14 +82,70 @@ namespace SchoolSystemWEB.API.Controllers
                         Username = $"{user.FirstName.Substring(0, 1).ToLower()}{user.LastName.ToLower()}",
                         UserId = user.UserId
                     };
-//                    dbContext.Employees.Add(employee);
+                    //                    dbContext.Employees.Add(employee);
                 }
             }
 
-//            dbContext.Users.AddRange(users);
-//            dbContext.SaveChanges();
+            //            dbContext.Users.AddRange(users);
+            //            dbContext.SaveChanges();
 
             return Ok(users);
         }
     }
+
+    // There will be changes(Add password in Models Employee/Student)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
+    {
+        private readonly WebSystemDB dbContext;
+
+        public LoginController(WebSystemDB dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
+        [HttpGet("{identifier}")]
+        public IActionResult Get([FromRoute] string identifier)
+        {
+            var student = dbContext.Students
+                .Include(s => s.User)
+                .ThenInclude(s => s.Role)
+                .FirstOrDefault(s => s.IndexNo == identifier);
+
+            if (student != null)
+            {
+                var userDto = new
+                {
+                    student.StudentId,
+                    student.User.FirstName,
+                    student.User.LastName,
+                    RoleName = student.User.Role.RoleName
+                };
+                return Ok(userDto);
+            }
+
+            var employee = dbContext.Employees
+                    .Include(e => e.User)
+                    .ThenInclude(e => e.Role)
+                    .FirstOrDefault(e => e.Username == identifier);
+
+            if (employee != null)
+            {
+                var userDto = new
+                {
+                    employee.Username,
+                    employee.User.FirstName,
+                    employee.User.LastName,
+                    RoleName = employee.User.Role.RoleName
+
+                };
+                return Ok(userDto);
+            }
+
+            return NotFound($"No user found with identifier '{identifier}'.");
+        }
+
+    }
+
 }
