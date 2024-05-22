@@ -1,0 +1,2 @@
+C:\Users\hlibs\Downloads\SchoolSystem\schoolsystem.client\obj\Debug\schoolsystem.client.esproj.CoreCompileInputs.cache
+C:\Users\hlibs\Downloads\WebApiSchoolSystem\schoolsystem.client\obj\Debug\schoolsystem.client.esproj.CoreCompileInputs.cache

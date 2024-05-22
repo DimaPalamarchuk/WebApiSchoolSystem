@@ -1,0 +1,6 @@
+@SchoolSystem.Server_HostAddress = http://localhost:5101
+
+GET {{SchoolSystem.Server_HostAddress}}/api/
+Accept: application/json
+
+###

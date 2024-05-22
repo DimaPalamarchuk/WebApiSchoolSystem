@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "WbO+Pg5+Dpj2x0/2Ii43fW6DblN8meaFuWc94ENqCZc=",
+  "Source": "SchoolSystem.Server",
+  "BasePath": "_content/SchoolSystem.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\hlibs\\Downloads\\WebApiSchoolSystem\\schoolsystem.client\\schoolsystem.client.esproj",
+      "Version": 2,
+      "Source": "schoolsystem.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
