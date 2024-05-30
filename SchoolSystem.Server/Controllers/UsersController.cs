@@ -39,24 +39,23 @@ namespace SchoolSystem.Server.Controllers
         }
 
         // Create new User and changes in DataBase
-        [HttpPost("{username}, {pass}, {firstName}, {lastName}, {roleName}")]
+        [HttpPost("{username},{pass},{firstName},{lastName},{roleName}")]
         public IActionResult Post(string username, string pass, string firstName, string lastName, string roleName)
         {
-            var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == username);
-            if (existingUser != null)
-            {
-                return Conflict($"Username {username} already exists");
-            }
-
             var role = dbContext.Roles.FirstOrDefault(r => r.RoleName == roleName);
             if (role == null)
             {
-                return NotFound($"Role with name {roleName} not found");
+                return BadRequest($"Role with name {roleName} is not found!");
             }
 
-            var newUser = new User
+            var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
+            if(user != null)
             {
-                UserId = Guid.NewGuid(),
+                return BadRequest($"User with username {username} is already exist!");
+            }
+
+            User newUser = new User
+            {
                 Username = username,
                 Password = pass,
                 FirstName = firstName,
@@ -64,72 +63,48 @@ namespace SchoolSystem.Server.Controllers
                 RoleId = role.RoleId
             };
 
-            if (roleName == "Student")
+            if(roleName == "student" && roleName == "Student")
             {
-                var newStudent = new Student
+                Student newStudent = new Student
                 {
                     StudentId = Guid.NewGuid(),
                     UserId = newUser.UserId
                 };
-                dbContext.Add(newStudent);
+                dbContext.Students.Add(newStudent);
             }
-
-            if (roleName == "Employee")
+            if(roleName == "employee" && roleName == "Employee")
             {
-                var newEmployee = new Employee
+                Employee newEmployee = new Employee
                 {
                     EmployeeId = Guid.NewGuid(),
                     UserId = newUser.UserId
                 };
-                dbContext.Add(newEmployee);
+                dbContext.Employees.Add(newEmployee);
             }
 
             dbContext.Users.Add(newUser);
+            dbContext.SaveChanges();
 
-            try
-            {
-                dbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while saving the user: {ex.Message}");
-            }
-
-            var userDto = new
-            {
-                newUser.UserId,
-                newUser.Username,
-                newUser.FirstName,
-                newUser.LastName,
-                RoleName = roleName
-            };
-
-            return Ok(userDto);
+            return Ok(newUser);
         }
 
-        // Get SINGLE User BY Username
-        [HttpGet("{username}")]
-        public IActionResult Get(string username)
+        // Delete User By Username
+        [HttpDelete("{username}")]
+        public IActionResult Delete(string username)
         {
-            var usernameFind = dbContext.Users
-                .Include(x => x.Role)
-                .FirstOrDefault(x => x.Username == username);
-
-            if(usernameFind != null)
+            var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
+            if(user != null)
             {
-                var userDto = new
-                {
-                    Username = usernameFind.Username,
-                    FirstName = usernameFind.FirstName,
-                    LastName = usernameFind.LastName,
-                    Role = usernameFind.Role.RoleName
-                };
-
-                return Ok(userDto);
+                dbContext.Users.Remove(user);
             }
-            return NotFound($"Username {username} is not found");
-        }
+            else
+            {
+                return BadRequest($"User with username {username} is not found!");
+            }
+            dbContext.SaveChanges();
 
+            return Ok($"User with username {username} has been deleted!");
+        }
     }
 
     // Class for user authorization
