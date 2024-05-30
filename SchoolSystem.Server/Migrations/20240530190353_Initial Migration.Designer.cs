@@ -12,7 +12,7 @@ using SchoolSystem.Server.Data;
 namespace SchoolSystem.Server.Migrations
 {
     [DbContext(typeof(WebSystemDB))]
-    [Migration("20240530145829_Initial Migration")]
+    [Migration("20240530190353_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
