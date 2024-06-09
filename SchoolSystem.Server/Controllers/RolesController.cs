@@ -15,6 +15,7 @@ namespace SchoolSystem.Server.Controllers
             this.dbContext = dbContext;
         }
 
+        // Create NEW Role
         [HttpPost("{roleName}")]
         public IActionResult Post(string roleName)
         {
@@ -39,15 +40,13 @@ namespace SchoolSystem.Server.Controllers
             return Ok(roles);
         }
 
-        // Get SINGLE Role By RoleName
+        // Get SINGLE Role By RoleId
         [HttpGet]
-        [Route("{roleName}")]
-        public IActionResult GetByName(string roleName)
+        [Route("{roleId}")]
+        public IActionResult GetByName(Guid roleId)
         {
-            // var role = dbContext.Roles.Find(id);
-
-            var role = dbContext.Roles.FirstOrDefault(x => x.RoleName == roleName);
-            if(role == null)
+            var role = dbContext.Roles.FirstOrDefault(r => r.RoleId == roleId);
+            if (role == null)
             {
                 return NotFound();
             }

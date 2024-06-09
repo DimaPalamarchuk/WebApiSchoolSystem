@@ -15,5 +15,19 @@ namespace SchoolSystem.Server.Controllers
             this.dbContext = dbContext;
         }
 
+        // Get ALL Employees
+        [HttpGet("All employees")]
+        public IActionResult GetAll()
+        {
+            var employees = dbContext.Employees
+                .Select(employee => new
+                {
+                    employee.EmployeeId,
+                    employee.UserId
+                })
+                .ToList();
+
+            return Ok(employees);
+        }
     }
 }

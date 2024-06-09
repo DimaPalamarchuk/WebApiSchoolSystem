@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Server.Data;
 using SchoolSystem.Server.Models;
+using System.Data;
 using System.Linq;
 
 namespace SchoolSystem.Server.Controllers
@@ -17,35 +18,46 @@ namespace SchoolSystem.Server.Controllers
             this.dbContext = dbContext;
         }
 
-        // Take a book for BorrowedBooks
-
-        [HttpPost("TakeBook")]
-        public IActionResult ActionBorrowedBook(string username, string title)
+        // Get ALL Student
+        [HttpGet("All students")]
+        public IActionResult GetAll()
         {
-            var student = dbContext.Students
-                .FirstOrDefault(s => s.User.Username == username);
+            var students = dbContext.Students
+                .Select(student => new
+                {
+                    student.StudentId,
+                    student.UserId
+                })
+                .ToList();
 
+            return Ok(students);
+        }
+
+
+        // Take a book for BorrowedBooks
+        [HttpPost("TakeBook")]
+        public IActionResult ActionBorrowedBook(Guid studentId, Guid bookId)
+        {
+            var student = dbContext.Students.FirstOrDefault(u => u.StudentId == studentId);
             if (student == null)
             {
-                return NotFound($"Student with username \"{username}\" is not found!");
+                return NotFound($"Student with id {studentId} is not found!");
             }
 
-            var book = dbContext.Books
-                .FirstOrDefault(s => s.Title == title);
-
+            var book = dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
             if (book == null)
             {
-                return NotFound($"Book with title \"{title}\" is not found!");
+                return NotFound($"Book with id {bookId} is not found!");
             }
 
-            var newBorrowedBook = new BorrowedBook
+            BorrowedBook newBorrowedBook = new BorrowedBook
             {
                 BorrowId = Guid.NewGuid(),
-                StudentId = student.StudentId,
-                BookId = book.BookId
+                StudentId = studentId,
+                BookId = bookId
             };
 
-            dbContext.Add(newBorrowedBook);
+            dbContext.BorrowedBooks.Add(newBorrowedBook);
             dbContext.SaveChanges();
 
             return Ok(newBorrowedBook);
@@ -54,16 +66,16 @@ namespace SchoolSystem.Server.Controllers
         [HttpGet("Get All BorrowedBook")]
         public IActionResult AllBorrowedBook()
         {
-            var borrowedBooks = dbContext.BorrowedBooks
-                .Select(borrowedBooks => new
+            var borrowBooks = dbContext.BorrowedBooks
+                .Select(borrow => new
                 {
-                    borrowedBooks.BorrowId,
-                    borrowedBooks.StudentId,
-                    borrowedBooks.BookId
+                    borrow.BorrowId,
+                    borrow.StudentId,
+                    borrow.BookId
                 })
                 .ToList();
 
-            return Ok(borrowedBooks);
+            return Ok(borrowBooks);
         }
 
     }

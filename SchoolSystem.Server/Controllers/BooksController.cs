@@ -50,15 +50,16 @@ namespace SchoolSystem.Server.Controllers
             return Ok(books);
         }
 
+        // Get ONE Book By Book
         [HttpGet("One book")]
-        public IActionResult OneBook(string title)
+        public IActionResult OneBook(Guid bookId)
         {
             var book = dbContext.Books
-                .FirstOrDefault(b => b.Title == title);
+                .FirstOrDefault(b => b.BookId == bookId);
 
             if(book == null)
             {
-                return NotFound($"Book with title \"{title}\" is not found!");
+                return NotFound($"Book with title \"{bookId}\" is not found!");
             }
             var bookFound = new Book
             {
@@ -69,16 +70,16 @@ namespace SchoolSystem.Server.Controllers
             return Ok(bookFound);
         }
 
-        // Change Title Book
+        // Change Title Book By BookId
         [HttpPut("Change Book")]
-        public IActionResult ChangeBookTitle(string currentTitle, string newTitle)
+        public IActionResult ChangeBookTitle(Guid bookId, string newTitle)
         {
             var book = dbContext.Books
-                .FirstOrDefault(b => b.Title == currentTitle);
+                .FirstOrDefault(b => b.BookId == bookId);
 
             if (book == null)
             {
-                return NotFound($"Book with title \"{currentTitle}\" is not found!");
+                return NotFound($"Book with title \"{bookId}\" is not found!");
             }
 
             book.Title = newTitle;
@@ -88,23 +89,22 @@ namespace SchoolSystem.Server.Controllers
             var changes = new
             {
                 BookId = book.BookId,
-                Current_Title = currentTitle,
                 New_Title = newTitle
             };
             return Ok(changes);
         }
 
 
-        // Delete Book
+        // Delete Book By BookId
         [HttpDelete("Delete Book")]
-        public IActionResult DeleteBook(string title)
+        public IActionResult DeleteBook(Guid bookId)
         {
             var book = dbContext.Books
-                .FirstOrDefault(b => b.Title == title);
+                .FirstOrDefault(b => b.BookId == bookId);
 
             if (book == null)
             {
-                return NotFound($"Book with title \"{title}\" is not found!");
+                return NotFound($"Book with title \"{bookId}\" is not found!");
             }
 
 

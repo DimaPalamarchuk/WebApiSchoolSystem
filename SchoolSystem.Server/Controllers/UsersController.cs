@@ -28,6 +28,7 @@ namespace SchoolSystem.Server.Controllers
             var users = dbContext.Users
                 .Select(user => new
                 {
+                    user.UserId,
                     user.Username,
                     user.FirstName,
                     user.LastName,
@@ -49,13 +50,14 @@ namespace SchoolSystem.Server.Controllers
             }
 
             var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
-            if(user != null)
+            if (user != null)
             {
-                return BadRequest($"User with username {username} is already exist!");
+                return BadRequest($"User with username {username} already exists!");
             }
 
             User newUser = new User
             {
+                UserId = Guid.NewGuid(),
                 Username = username,
                 Password = pass,
                 FirstName = firstName,
@@ -63,7 +65,10 @@ namespace SchoolSystem.Server.Controllers
                 RoleId = role.RoleId
             };
 
-            if(roleName == "student" && roleName == "Student")
+            dbContext.Users.Add(newUser);
+            dbContext.SaveChanges();
+
+            if (role.RoleName.Equals("student", StringComparison.OrdinalIgnoreCase))
             {
                 Student newStudent = new Student
                 {
@@ -72,7 +77,7 @@ namespace SchoolSystem.Server.Controllers
                 };
                 dbContext.Students.Add(newStudent);
             }
-            if(roleName == "employee" && roleName == "Employee")
+            else if (role.RoleName.Equals("employee", StringComparison.OrdinalIgnoreCase))
             {
                 Employee newEmployee = new Employee
                 {
@@ -82,28 +87,27 @@ namespace SchoolSystem.Server.Controllers
                 dbContext.Employees.Add(newEmployee);
             }
 
-            dbContext.Users.Add(newUser);
             dbContext.SaveChanges();
 
             return Ok(newUser);
         }
 
-        // Delete User By Username
-        [HttpDelete("{username}")]
-        public IActionResult Delete(string username)
+        // Delete User By UserId
+        [HttpDelete("{userId}")]
+        public IActionResult Delete(Guid userId)
         {
-            var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
+            var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if(user != null)
             {
                 dbContext.Users.Remove(user);
             }
             else
             {
-                return BadRequest($"User with username {username} is not found!");
+                return BadRequest($"User with username {userId} is not found!");
             }
             dbContext.SaveChanges();
 
-            return Ok($"User with username {username} has been deleted!");
+            return Ok($"User with username {userId} has been deleted!");
         }
     }
 
