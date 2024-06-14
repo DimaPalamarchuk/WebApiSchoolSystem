@@ -25,7 +25,9 @@
             "@assets/*": [ "./src/assets/*" ],
             "@components/*": [ "./src/components/*" ],
             "@hooks/*": [ "./src/hooks/*" ],
-            "@router/*": [ "./src/router/*" ]
+            "@router/*": [ "./src/router/*" ],
+            "@actions/*": [ "./src/actions/*" ],
+            "@app/*": [ "./src/app/*" ]
         }
     },
     "include": [ "src" ],

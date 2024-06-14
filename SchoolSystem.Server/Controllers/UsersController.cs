@@ -125,14 +125,14 @@ namespace SchoolSystem.Server.Controllers
         }
 
         // Checking data for user authorization
-        [HttpGet("{username},{pass}")]
+        [HttpGet]
         public IActionResult Get(string username, string pass)
         {
             var userEnter = dbContext.Users
                 .Include(s => s.Role)
                 .FirstOrDefault(s => s.Username == username && s.Password == pass);
 
-            if(userEnter != null)
+            if (userEnter != null)
             {
                 var userDto = new
                 {

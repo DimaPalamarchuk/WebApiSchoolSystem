@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +12,16 @@ builder.Services.AddSwaggerGen();
 
 // Connection with DB
 builder.Services.AddDbContext<WebSystemDB>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString68177")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policyBuilder => policyBuilder.WithOrigins("https://localhost:5173") 
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader()
+                                      .AllowCredentials());
+});
 
 var app = builder.Build();
 
@@ -23,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 
