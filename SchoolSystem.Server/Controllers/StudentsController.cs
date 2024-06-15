@@ -60,7 +60,39 @@ namespace SchoolSystem.Server.Controllers
             dbContext.BorrowedBooks.Add(newBorrowedBook);
             dbContext.SaveChanges();
 
-            return Ok(newBorrowedBook);
+            // Создаем новый запрос для получения полной информации о заимствовании с подгруженными навигационными свойствами
+            var borrowedBook = dbContext.BorrowedBooks
+                .Where(bb => bb.BorrowId == newBorrowedBook.BorrowId)
+                .Include(bb => bb.Book)
+                .Include(bb => bb.Student)
+                .ThenInclude(s => s.User)
+                .Select(bb => new
+                {
+                    bb.BorrowId,
+                    bb.StudentId,
+                    bb.BookId,
+                    Book = new
+                    {
+                        bb.Book.BookId,
+                        bb.Book.Title
+                    },
+                    Student = new
+                    {
+                        bb.Student.StudentId,
+                        bb.Student.UserId,
+                        User = new
+                        {
+                            bb.Student.User.UserId,
+                            bb.Student.User.Username,
+                            bb.Student.User.FirstName,
+                            bb.Student.User.LastName,
+                            bb.Student.User.RoleId
+                        }
+                    }
+                })
+                .FirstOrDefault();
+
+            return Ok(borrowedBook);
         }
 
         [HttpGet("Get All BorrowedBook")]

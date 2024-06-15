@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Server.Data;
 using SchoolSystem.Server.Models;
 
@@ -112,6 +113,44 @@ namespace SchoolSystem.Server.Controllers
             dbContext.SaveChanges();
 
             return Ok(book);
+        }
+
+        // Get Borrowed Books By StudentId
+        [HttpGet("Get Borrowed Books By StudentId")]
+        public IActionResult GetBook(Guid studentId)
+        {
+            var borrowedBooks = dbContext.BorrowedBooks
+                                 .Where(b => b.StudentId == studentId)
+                                 .Include(b => b.Book)
+                                 .Include(b => b.Student)
+                                 .ThenInclude(s => s.User)
+                                 .Select(b => new
+                                 {
+                                     b.BorrowId,
+                                     b.StudentId,
+                                     b.BookId,
+                                     Book = new
+                                     {
+                                         b.Book.BookId,
+                                         b.Book.Title
+                                     },
+                                     Student = new
+                                     {
+                                         b.Student.StudentId,
+                                         b.Student.UserId,
+                                         User = new
+                                         {
+                                             b.Student.User.UserId,
+                                             b.Student.User.Username,
+                                             b.Student.User.FirstName,
+                                             b.Student.User.LastName,
+                                             b.Student.User.RoleId
+                                         }
+                                     }
+                                 })
+                                 .ToList();
+
+            return Ok(borrowedBooks);
         }
     }
 }

@@ -3,3 +3,4 @@ C:\Users\hlibs\Downloads\WebApiSchoolSystem\schoolsystem.client\obj\Debug\school
 C:\Users\Dima\Source\Repos\Project\schoolsystem.client\obj\Debug\schoolsystem.client.esproj.CoreCompileInputs.cache
 C:\Users\Dima\Source\Repos\School\schoolsystem.client\obj\Debug\schoolsystem.client.esproj.CoreCompileInputs.cache
 C:\Users\Dima\Source\Repos\WebApiSchoolSystem2\schoolsystem.client\obj\Debug\schoolsystem.client.esproj.CoreCompileInputs.cache
+C:\Users\Dima\Source\Repos\ProjectWEB\schoolsystem.client\obj\Debug\schoolsystem.client.esproj.CoreCompileInputs.cache
