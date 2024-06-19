@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { DefaultLayout } from '@components/templates/DefaultLayout/DefaultLayout'
-import { PersonalData } from '@components/pages/common/PersonalData'
+import { PersonalData } from '@components/pages/common/PersonalData/PersonalData'
 import { EmployeeLibrary } from '@components/pages/employee/EmployeeLibrary'
 import { StudentLibrary } from '@components/pages/student/StudentLibrary'
 import { StudentGrades } from '@components/pages/student/StudentGrades'

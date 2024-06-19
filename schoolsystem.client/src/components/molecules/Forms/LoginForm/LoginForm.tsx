@@ -18,13 +18,10 @@ export const LoginForm: FC = memo(() => {
   }
 
   return (
-    <div className="login-form">
-      <h1>School System</h1>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <LoginInput value={username} setValue={setLogin} type="text" placeholder="Login" />
-        <LoginInput value={password} setValue={setPassword} type="password" placeholder="Password" />
-        <StandardButton text="Sign in" width="100%" height="55px" />
-      </form>
-    </div>
+    <form className="login-form" onSubmit={handleSubmit}>
+      <LoginInput value={username} setValue={setLogin} type="text" placeholder="Login" />
+      <LoginInput value={password} setValue={setPassword} type="password" placeholder="Password" />
+      <StandardButton text="Sign in" width="100%" height="55px" />
+    </form>
   )
 })

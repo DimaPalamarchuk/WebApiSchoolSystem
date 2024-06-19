@@ -9,6 +9,7 @@ export const Login: FC = memo(() => {
   useDocumentTitle('School System | Login')
   return (
     <div className="login">
+      <h1>School System</h1>
       <LoginForm />
     </div>
   )

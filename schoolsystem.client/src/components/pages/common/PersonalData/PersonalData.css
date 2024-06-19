@@ -1,0 +1,9 @@
+﻿td {
+    padding-bottom: 20px;
+    vertical-align: center;
+
+    &:first-child {
+        padding-right: 100px;
+        font-weight: bold;
+    }
+}
