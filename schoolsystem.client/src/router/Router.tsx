@@ -14,32 +14,37 @@ import { useAppSelector } from '@app/hooks'
 export const Router: FC = memo(() => {
   const { currentUser, isAuth } = useAppSelector((state) => state.user)
 
-  return (
-    <Routes>
-      {!isAuth ? (
-        <>
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </>
-      ) : (
+  const employeeRoutes = (
+    <>
+      <Route path="/library" element={<EmployeeLibrary />} />
+      <Route path="/students" element={<EmployeeStudents />} />
+    </>
+  )
+
+  const studentRoutes = (
+    <>
+      <Route path="/grades" element={<StudentGrades />} />
+      <Route path="/library" element={<StudentLibrary />} />
+      <Route path="/my-books" element={<StudentMyBooks />} />
+    </>
+  )
+
+  if (!isAuth) {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    )
+  } else {
+    return (
+      <Routes>
         <Route path="/" element={<DefaultLayout />}>
           <Route path="/personal-data" element={<PersonalData />} />
-
-          {currentUser.roleName === 'employee' ? (
-            <>
-              <Route path="/library" element={<EmployeeLibrary />} />
-              <Route path="/students" element={<EmployeeStudents />} />
-            </>
-          ) : (
-            <>
-              <Route path="/grades" element={<StudentGrades />} />
-              <Route path="/library" element={<StudentLibrary />} />
-              <Route path="/my-books" element={<StudentMyBooks />} />
-            </>
-          )}
+          {currentUser.roleName === 'employee' ? employeeRoutes : studentRoutes}
           <Route path="*" element={<Navigate to="/personal-data" replace />} />
         </Route>
-      )}
-    </Routes>
-  )
+      </Routes>
+    )
+  }
 })
