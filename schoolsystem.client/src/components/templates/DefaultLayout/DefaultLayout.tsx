@@ -1,3 +1,5 @@
+import './DefaultLayout.css'
+
 import { FC, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 
@@ -5,9 +7,11 @@ import { Header } from '@components/organisms/Header/Header'
 
 export const DefaultLayout: FC = memo(() => {
   return (
-    <div>
+    <div className="default-layout">
       <Header />
-      <Outlet />
+      <div className="wrapper">
+        <Outlet />
+      </div>
     </div>
   )
 })

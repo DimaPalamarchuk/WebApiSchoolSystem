@@ -1,0 +1,7 @@
+.default-layout {
+    display: flex;
+}
+
+.wrapper {
+    padding: 20px;
+}

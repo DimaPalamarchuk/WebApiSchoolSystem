@@ -16,10 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\actions\" />
-    <Folder Include="src\components\atoms\Buttons\" />
     <Folder Include="src\components\atoms\Inputs\" />
-    <Folder Include="src\components\molecules\Navbar\" />
     <Folder Include="src\components\organisms\Header\" />
-    <Folder Include="src\reducers\" />
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ import { FC, memo } from 'react'
 
 interface StandardButtonProps {
   text: string
-  onClick: () => void
+  onClick?: () => void
   width: string
   height: string
 }
