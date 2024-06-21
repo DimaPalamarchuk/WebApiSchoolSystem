@@ -152,5 +152,23 @@ namespace SchoolSystem.Server.Controllers
 
             return Ok(borrowedBooks);
         }
+
+        // Delete Borrowed Books By StudentId and BookId
+        [HttpDelete("Return a book")]
+        public IActionResult ReturnBook(Guid bookId, Guid studentId)
+        {
+            var borrowedBook = dbContext.BorrowedBooks
+                               .FirstOrDefault(b => b.BookId == bookId && b.StudentId == studentId);
+
+            if (borrowedBook == null)
+            {
+                return NotFound($"Borrowed book with BookId {bookId} and StudentId {studentId} is not found!");
+            }
+
+            dbContext.BorrowedBooks.Remove(borrowedBook);
+            dbContext.SaveChanges();
+
+            return Ok($"Book with Id {bookId} returned by Student with Id {studentId}.");
+        }
     }
 }

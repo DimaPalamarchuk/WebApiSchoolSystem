@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Connection with DB
 builder.Services.AddDbContext<WebSystemDB>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString68177")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString68161")));
 
 builder.Services.AddCors(options =>
 {
