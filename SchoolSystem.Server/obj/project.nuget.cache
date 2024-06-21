@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1PzJQRqVYb9gIIDHjKqDQVoSEQfqSYgnDBrbK8typvY4a0aa4xNPj5vrPr6/iM1ib/Evn5LZSL8zhiuZTQu6+g==",
+  "dgSpecHash": "ym03B9e2Xpl0JcKPmAt23O3FpC40ZCq/r1jINiLWvOdw41hFqKS+p1f234n0iapS5k4q5gdeycO2cfE52KRBCw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dima\\Source\\Repos\\WebApiSchoolSystem1\\SchoolSystem.Server\\SchoolSystem.Server.csproj",
+  "projectFilePath": "C:\\Users\\Dima\\Source\\Repos\\WebApiSchoolSystem3\\SchoolSystem.Server\\SchoolSystem.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dima\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Dima\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

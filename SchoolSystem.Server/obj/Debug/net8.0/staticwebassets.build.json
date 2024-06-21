@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "zPoFuOnE8YIN4+4mNHauTEdfnNtj0UYr6SgYlcGrjy0=",
+  "Hash": "UalYkeu66TR0QUh0/CDsHcXgONEGInw2oMEs4bAe9Sc=",
   "Source": "SchoolSystem.Server",
   "BasePath": "_content/SchoolSystem.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\Dima\\Source\\Repos\\WebApiSchoolSystem1\\schoolsystem.client\\schoolsystem.client.esproj",
+      "Identity": "C:\\Users\\Dima\\Source\\Repos\\WebApiSchoolSystem3\\schoolsystem.client\\schoolsystem.client.esproj",
       "Version": 2,
       "Source": "schoolsystem.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",

@@ -125,21 +125,28 @@ namespace SchoolSystem.Server.Controllers
         }
 
         // Checking data for user authorization
-        [HttpGet]
+        [HttpGet("Login")]
         public IActionResult Get(string username, string pass)
         {
             var userEnter = dbContext.Users
-                .Include(s => s.Role)
-                .FirstOrDefault(s => s.Username == username && s.Password == pass);
+                .Include(u => u.Role)
+                .FirstOrDefault(u => u.Username == username && u.Password == pass);
 
             if (userEnter != null)
             {
+                var student = dbContext.Students
+                    .FirstOrDefault(s => s.UserId == userEnter.UserId);
+                var employee = dbContext.Employees
+                    .FirstOrDefault(e => e.UserId == userEnter.UserId);
+
                 var userDto = new
                 {
                     userEnter.Username,
                     userEnter.FirstName,
                     userEnter.LastName,
-                    RoleName = userEnter.Role.RoleName
+                    RoleName = userEnter.Role.RoleName,
+                    EmployeeId = employee?.EmployeeId,
+                    StudentId = student?.StudentId
                 };
                 return Ok(userDto);
             }
