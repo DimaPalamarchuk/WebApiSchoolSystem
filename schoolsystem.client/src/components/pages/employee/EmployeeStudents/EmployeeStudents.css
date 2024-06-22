@@ -1,0 +1,29 @@
+﻿.students {
+    display: flex;
+    gap: 50px;
+}
+
+.students-add-new {
+    flex: 1;
+}
+
+.students-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.students-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    
+    select {
+        width: 100px;
+    }
+    
+    h2, h3 {
+        margin: 0;
+    }
+}

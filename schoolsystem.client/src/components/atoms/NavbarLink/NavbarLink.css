@@ -10,6 +10,7 @@
     border-radius: 15px;
     transition: all 0.3s ease;
     background: transparent;
+    text-wrap: nowrap;
     
     &:hover {
         color: var(--color1);

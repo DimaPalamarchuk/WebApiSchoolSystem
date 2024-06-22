@@ -1,0 +1,12 @@
+﻿.personal-data-cell {
+    vertical-align: center;
+
+    &:first-child {
+        padding-right: 50px;
+        font-weight: bold;
+    }
+    
+    &:not(:first-child) {
+        padding-bottom: 10px;
+    }
+}

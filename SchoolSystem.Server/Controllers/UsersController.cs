@@ -125,7 +125,7 @@ namespace SchoolSystem.Server.Controllers
         }
 
         // Checking data for user authorization
-        [HttpGet("Login")]
+        [HttpGet]
         public IActionResult Get(string username, string pass)
         {
             var userEnter = dbContext.Users

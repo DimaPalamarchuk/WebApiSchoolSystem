@@ -1,4 +1,0 @@
-﻿{
-  "extends": "stylelint-config-standard",
-  "plugins": ["stylelint-order"]
-}

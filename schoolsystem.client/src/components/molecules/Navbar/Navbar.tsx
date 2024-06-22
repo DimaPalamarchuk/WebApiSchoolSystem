@@ -2,7 +2,7 @@
 
 import { FC, memo } from 'react'
 
-import { NavbarLink, NavbarLinkProps } from '@components/atoms/Links/NavbarLink/NavbarLink.tsx'
+import { NavbarLink, NavbarLinkProps } from '@components/atoms/NavbarLink/NavbarLink.tsx'
 import { NavbarButton } from '@components/atoms/Buttons/NavbarButton/NavbarButton.tsx'
 import { useAppDispatch, useAppSelector } from '@app/hooks.ts'
 import { logout } from '@app/slices/userSlice.ts'

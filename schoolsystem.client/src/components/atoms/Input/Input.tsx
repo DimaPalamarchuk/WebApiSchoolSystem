@@ -1,18 +1,18 @@
-import './LoginInput.css'
+import './Input.css'
 
 import { FC, memo } from 'react'
 
-interface LoginInputProps {
+interface InputProps {
   value: string
   setValue: (value: string) => void
   type: string
   placeholder: string
 }
 
-export const LoginInput: FC<LoginInputProps> = memo(({ value, setValue, type, placeholder }) => {
+export const Input: FC<InputProps> = memo(({ value, setValue, type, placeholder }) => {
   return (
     <input
-      className="login-input"
+      className="input"
       onChange={(event) => setValue(event.target.value)}
       value={value}
       type={type}

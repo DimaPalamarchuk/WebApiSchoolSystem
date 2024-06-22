@@ -6,6 +6,8 @@ interface CurrentUser {
   firstName: string
   lastName: string
   roleName: string
+  employeeId: null | string
+  studentId: null | string
 }
 
 interface UserSlice {
@@ -19,6 +21,8 @@ const initialState: UserSlice = {
     firstName: '',
     lastName: '',
     roleName: '',
+    employeeId: '',
+    studentId: '',
   },
   isAuth: false,
 }

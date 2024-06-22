@@ -2,10 +2,12 @@
 
 import { FC, FormEvent, memo, useState } from 'react'
 
-import { LoginInput } from '@components/atoms/Inputs/LoginInput/LoginInput.tsx'
-import { StandardButton } from '@components/atoms/Buttons/StandardButton/StandardButton.tsx'
-import { login } from '@actions/user.ts'
 import { useAppDispatch } from '@app/hooks.ts'
+
+import { login } from '@actions/users.ts'
+
+import { Input } from '@components/atoms/Input/Input.tsx'
+import { StandardButton } from '@components/atoms/Buttons/StandardButton/StandardButton.tsx'
 
 export const LoginForm: FC = memo(() => {
   const [username, setLogin] = useState<string>('')
@@ -19,8 +21,8 @@ export const LoginForm: FC = memo(() => {
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
-      <LoginInput value={username} setValue={setLogin} type="text" placeholder="Login" />
-      <LoginInput value={password} setValue={setPassword} type="password" placeholder="Password" />
+      <Input value={username} setValue={setLogin} type="text" placeholder="Login" />
+      <Input value={password} setValue={setPassword} type="password" placeholder="Password" />
       <StandardButton text="Sign in" width="100%" height="55px" />
     </form>
   )

@@ -1,0 +1,9 @@
+﻿.grades-cell {
+    &:not(:last-child) {
+        height: 30px;
+    }
+
+    &:first-child {
+        font-weight: bold;
+    }
+}
